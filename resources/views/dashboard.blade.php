@@ -150,15 +150,15 @@
     </div>
 
     <div class="col-md-6 col-lg-3 mb-4">
-        <a href="{{ route('suppliers.index') }}" class="text-decoration-none">
+        <a href="{{ route('promos.index') }}" class="text-decoration-none">
             <div class="card kpi-card shadow-sm border-0 h-100">
                 <div class="card-body d-flex align-items-center gap-3">
                     <div class="icon-circle bg-danger text-white">
                         <i class="bi bi-truck"></i>
                     </div>
                     <div>
-                        <h6 class="card-subtitle mb-1 text-muted">Total Supplier</h6>
-                        <h4 class="card-title mb-0 text-dark">{{ $totalSupplier }} Supplier</h4>
+                        <h6 class="card-subtitle mb-1 text-muted">Total Promo</h6>
+                        <h4 class="card-title mb-0 text-dark">{{ $totalPromo }} Promo</h4>
                     </div>
                 </div>
             </div>

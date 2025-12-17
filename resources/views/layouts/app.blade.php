@@ -2,252 +2,310 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>@yield('title', 'Mofu Cafe Dashboard')</title>
+    <title>@yield('title', 'Mofu Cafe Admin')</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    {{-- Bootstrap & Icons --}}
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+    <link
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+        rel="stylesheet"
+    >
+    <link
+        href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;600;700&display=swap"
+        rel="stylesheet"
+    >
 
     <style>
         :root {
-            /* Palet Warna Mofusand (versi final) */
-            --mofu-blue-bg: #e0f2f7;
-            --mofu-sidebar-bg: #7096b6;
-            --mofu-blue-text: #5a7d9a;
-            --mofu-dark-text: #303f56;
-            --mofu-text-muted: #6c757d;
-            --mofu-yellow-accent: #ffb347;
-            --mofu-light-border: #d0e6ed;
-            --mofu-shadow-soft: rgba(0, 0, 0, 0.04);
-            --card-bg: #ffffff;
+            /* Base Colors */
+            --bg-body: #FFFF;
+            --bg-sidebar: #F6F3F0;
+
+            /* Typography Colors */
+            --text-muted: #9A9A9A;
+            --text-active-start: #8B5E3C;
+            --text-active-end: #A67C52;
+
+            --gradient: linear-gradient(to bottom, #603C2C, #C67C5A);
         }
 
         body {
-            margin: 0;
-            background-color: var(--mofu-blue-bg);
+            background-color: var(--bg-body);
             font-family: 'Quicksand', sans-serif;
             font-weight: 500;
-            color: var(--mofu-dark-text);
+            margin: 0;
         }
 
-        /* ===== SIDEBAR ===== */
-        .page-wrapper {
-            display: flex;
-        }
-
+        /* === SIDEBAR LAYOUT === */
         .sidebar {
-            width: 260px;
-            background-color: var(--mofu-sidebar-bg);
+            width: 270px;
             height: 100vh;
+            background-color: var(--bg-sidebar);
             position: fixed;
-            top: 0; left: 0;
-            padding: 1.5rem;
+            top: 0;
+            left: 0;
+            padding: 2.5rem 2rem;
             display: flex;
             flex-direction: column;
         }
 
-        .sidebar .brand {
-            font-size: 1.8rem;
+        /* Brand Style */
+        .brand-title {
+            font-size: 2rem;
             font-weight: 700;
-            color: #ffffff;
-            text-align: center;
-            margin-bottom: 2rem;
-            text-decoration: none;
+            color: #8B5E3C;
+            margin-bottom: 0;
+            line-height: 1;
         }
 
-        .sidebar .nav-title {
+        .brand-subtitle {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #999;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-top: 5px;
+            margin-bottom: 3rem;
+            display: block;
+        }
+
+        /* Group Title */
+        .nav-group-title {
             font-size: 0.75rem;
-            color: rgba(255, 255, 255, 0.6);
+            color: #A0A0A0;
             text-transform: uppercase;
             letter-spacing: 1px;
             margin-top: 1.5rem;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
             font-weight: 600;
         }
 
-        .sidebar-nav .nav-link {
+        /* === NAV LINK === */
+        .nav-link {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            color: rgba(255, 255, 255, 0.85);
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            margin-bottom: 0.25rem;
-            transition: all 0.2s ease;
-            font-weight: 600;
+            color: var(--text-muted);
+            padding: 0.7rem 0;
+            font-size: 1.05rem;
+            text-decoration: none;
+            position: relative;
+            transition: all 0.3s ease;
         }
 
-        .sidebar-nav .nav-link i {
-            font-size: 1.1rem;
-            width: 20px;
-            text-align: center;
+        .nav-link i {
+            width: 32px;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            display: inline-block;
         }
 
-        .sidebar-nav .nav-link:hover {
-            background-color: rgba(0, 0, 0, 0.15);
-            color: #ffffff;
+        .nav-link:hover {
+            color: #666;
         }
 
-        .sidebar-nav .nav-link.active {
-            background-color: var(--mofu-yellow-accent);
-            color: var(--mofu-dark-text);
+        /* === ACTIVE STATE === */
+        .nav-link.active {
+            font-weight: 700;
+            background: transparent;
         }
 
-        .sidebar .sidebar-footer {
+        .nav-link.active span,
+        .nav-link.active i {
+            background:  var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-link.active::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            height: 24px;
+            width: 5px;
+            background:  var(--gradient);
+            border-top-right-radius: 6px;
+            border-bottom-right-radius: 6px;
+        }
+
+        /* === PROFILE FOOTER === */
+        .sidebar-footer {
             margin-top: auto;
         }
 
-        /* ===== PAGE CONTENT ===== */
-        .page-content {
-            margin-left: 260px;
-            width: calc(100% - 260px);
-            padding: 1.5rem;
-        }
-
-        .content-header {
-            background-color: var(--card-bg);
-            border: 1px solid var(--mofu-light-border);
-            border-radius: 0.75rem;
-            padding: 1rem 1.5rem;
+        .user-card {
             display: flex;
             align-items: center;
-            justify-content: space-between;
-            box-shadow: 0 1px 3px 0 var(--mofu-shadow-soft);
-            margin-bottom: 1.5rem;
+            gap: 12px;
+            padding-top: 1rem;
         }
 
-        .content-card {
-            background: var(--card-bg);
-            border: 1px solid var(--mofu-light-border);
-            border-radius: 0.75rem;
-            box-shadow: 0 1px 3px 0 var(--mofu-shadow-soft);
-            color: var(--mofu-dark-text);
-            padding: 1.5rem;
-        }
-
-           .header-profile-image {
+        .user-avatar-placeholder {
             width: 45px;
             height: 45px;
-            border-radius: 50%;
-            object-fit: cover;
-            border: 2px solid var(--mofu-light-border);
-        }
-
-        /* ===== CUSTOM BUTTON ===== */
-        .btn-add-new {
-            background-color: #ffffff;
-            color: var(--mofu-yellow-accent);
-            border: 1px solid var(--mofu-yellow-accent);
-            border-radius: 50px;
-            padding: 0.5rem 1.25rem;
-            font-weight: 600;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            transition: all 0.2s ease-in-out;
-        }
-
-        .btn-add-new:hover {
-            background-color: var(--mofu-dark-text);
-            color: #ffffff;
-            border-color: var(--mofu-dark-text);
-        }
-
-        /* ===== KPI Cards ===== */
-        .kpi-card .card-body {
-            display: flex;
-            align-items: center;
-        }
-
-        .kpi-card .icon-circle {
-            width: 50px;
-            height: 50px;
+            background: var(--gradient);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5rem;
-            margin-right: 15px;
             color: white;
+            font-size: 1.4rem;
+            flex-shrink: 0;
         }
 
-        .kpi-card .icon-circle.bg-success { background-color: #6fb07f !important; }
-        .kpi-card .icon-circle.bg-primary { background-color: var(--mofu-blue-text) !important; }
-        .kpi-card .icon-circle.bg-warning { background-color: var(--mofu-yellow-accent) !important; }
-        .kpi-card .icon-circle.bg-danger { background-color: #e57373 !important; }
-
-        /* ===== TABLE ===== */
-        .table thead {
-            background-color: var(--mofu-blue-text);
-            color: white;
+        .user-avatar-img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid  var(--gradient);
         }
 
-        .table tbody tr:hover {
-            background-color: var(--mofu-blue-bg);
+        .user-info {
+            flex-grow: 1;
+            overflow: hidden;
         }
 
-        /* ===== PAGINATION ===== */
-        .pagination .page-item .page-link {
-            color: var(--mofu-blue-text);
-            border-color: var(--mofu-light-border);
+        .user-name {
+            display: block;
+            font-weight: 700;
+            color: #333;
+            font-size: 1rem;
         }
 
-        .pagination .page-item.active .page-link {
-            background-color: var(--mofu-blue-text);
-            border-color: var(--mofu-blue-text);
-            color: white;
+        .user-email {
+            display: block;
+            font-size: 0.8rem;
+            color: #999;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .pagination .page-item .page-link:hover {
-            background-color: var(--mofu-blue-bg);
-            border-color: var(--mofu-blue-text);
-            color: var(--mofu-dark-text);
+        .logout-btn {
+            color: #8B5E3C;
+            font-size: 1.4rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.2s;
         }
 
-        /* ===== FOOTER ===== */
-        .app-footer {
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 50px;
+        .logout-btn:hover {
+            transform: translateX(3px);
         }
 
-        .footer-image {
-            width: 100%;
-            height: auto;
-            opacity: 0.9;
+        /* ===========================
+        CONTENT HEADER
+        =========================== */
+        .content-header-wrapper {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--bg-sidebar);
+            border-radius: 18px;
+            padding: 1.5rem 2rem;
+            margin-bottom: 2rem;
         }
 
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #333;
+        }
+
+        .date-display {
+            text-align: right;
+        }
+
+        .date-label {
+            display: block;
+            font-size: 0.75rem;
+            color: #999;
+        }
+
+        .date-value {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        /* ===========================
+           CONTENT CARD
+           =========================== */
+        .page-content {
+            margin-left: 270px;
+            padding: 2rem 3rem;
+            min-height: 100vh;
+        }
+
+        .content-card {
+            background-color: var(--bg-sidebar);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 40px rgba(139, 94, 60, 0.05);
+            border: 1px solid rgba(139, 94, 60, 0.05); 
+            margin-top: 1.5rem;
+            color: var(--text-primary);
+        }
+
+        /* Reset Bootstrap Elements di dalam Card */
+        .content-card .card { border: none; background: transparent; shadow: none; }
+        .content-card .card-header { background: transparent; border-bottom: none; }
+        .content-card .card-footer { background: transparent; border-top: 1px solid #eee; }
+
+        /* ==============================================
+   GLOBAL ADD BUTTON STYLE (GRADIENT)
+   ============================================== */
+.btn-add-new {
+    /* Gradient Sesuai Request */
+    background: linear-gradient(to bottom, #603C2C, #C67C5A); 
+    
+    color: white;
+    border: none;
+    border-radius: 50px; /* Pill Shape */
+    padding: 0.6rem 1.5rem;
+    font-weight: 600;
+    
+    /* Flexbox untuk meratakan icon & text */
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    
+    /* Bayangan halus warna coklat */
+    box-shadow: 0 4px 15px rgba(139, 94, 60, 0.2);
+    
+    /* Transisi halus saat hover */
+    transition: all 0.3s ease;
+    text-decoration: none; /* Penting jika menggunakan tag <a> */
+}
+
+/* Efek Hover: Sedikit naik & bayangan menebal */
+.btn-add-new:hover {
+    transform: translateY(-2px); /* Tombol naik sedikit */
+    box-shadow: 0 6px 20px rgba(139, 94, 60, 0.3);
+}
     </style>
-    @stack('styles')
 </head>
+
 <body>
+    <div class="page-wrapper">
+        @include('layouts.partials.sidebar')
 
-<div class="page-wrapper">
-    @include('layouts.partials.sidebar')
+        <div class="page-content">
+            @include('layouts.partials.content-header')
 
-    <div class="page-content">
-        @include('layouts.partials.content-header')
-
-        <main class="main-content">
-            @yield('content')
-        </main>
+            <main class="main-content">
+                @yield('content')
+            </main>
+        </div>
     </div>
-</div>
 
-{{-- Logout Button --}}
-<div style="display: flex; justify-content: flex-end;">
-<form action="{{ route('logout') }}" method="POST">
-    @csrf 
-    <button type="submit" class="btn btn-danger">
-        Logout
-    </button>
-</form>
-</div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-@yield('scripts')
-
+    <!-- JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
-use App\Models\Supplier;
+use App\Models\Promo; // Model Promo sudah benar di-import
 use App\Models\TransaksiPenjualan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -19,7 +19,9 @@ class DashboardController extends Controller
         $pendapatanHariIni = TransaksiPenjualan::whereDate('created_at', today())->sum('total_harga');
         $jumlahTransaksiHariIni = TransaksiPenjualan::whereDate('created_at', today())->count();
         $totalProduk = Product::count();
-        $totalSupplier = Supplier::count();
+        
+        // PERBAIKAN: Ganti Promo
+        $totalPromo = Promo::count(); 
 
         // 2. Data untuk Grafik Penjualan 7 Hari Terakhir
         $salesData = TransaksiPenjualan::select(
@@ -34,10 +36,9 @@ class DashboardController extends Controller
         // Proses data untuk Chart.js
         $chartLabels = [];
         $chartData = [];
-        // Inisialisasi 7 hari dengan pendapatan 0
         for ($i = 6; $i >= 0; $i--) {
             $date = now()->subDays($i)->format('Y-m-d');
-            $chartLabels[] = now()->subDays($i)->format('D, d M'); // Format: Tue, 14 Oct
+            $chartLabels[] = now()->subDays($i)->format('D, d M');
             $chartData[$date] = 0;
         }
         foreach ($salesData as $data) {
@@ -45,11 +46,10 @@ class DashboardController extends Controller
         }
         $chartData = array_values($chartData);
 
-
         // 3. Data untuk Aktivitas Terbaru
         $aktivitasTerbaru = TransaksiPenjualan::with('details.product')
             ->latest()
-            ->take(5) // Ambil 5 transaksi terakhir
+            ->take(5)
             ->get();
 
         // 4. Kirim semua data ke view
@@ -57,7 +57,7 @@ class DashboardController extends Controller
             'pendapatanHariIni',
             'jumlahTransaksiHariIni',
             'totalProduk',
-            'totalSupplier',
+            'totalPromo', // Nama variabel disesuaikan
             'chartLabels',
             'chartData',
             'aktivitasTerbaru'

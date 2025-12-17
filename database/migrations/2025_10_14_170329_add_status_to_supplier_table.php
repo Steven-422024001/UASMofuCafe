@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('supplier', function (Blueprint $table) {
+        Schema::table('promo', function (Blueprint $table) {
             // Menambahkan kolom 'status' setelah kolom 'phone'
-            // Pilihan statusnya adalah Active, Idle, Inactive. Defaultnya 'Active'.
-            $table->enum('status', ['Active', 'Idle', 'Inactive'])->default('Active')->after('phone');
+            // Pilihan statusnya adalah Active, Inactive. Defaultnya 'Active'.
+            $table->enum('status', ['Active', 'Inactive'])->default('Active')->after('phone');
         });
     }
 
@@ -23,7 +23,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('suppliers', function (Blueprint $table) {
+        Schema::table('promos', function (Blueprint $table) {
             //
         });
     }

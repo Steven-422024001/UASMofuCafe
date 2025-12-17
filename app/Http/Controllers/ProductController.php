@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use Illuminate\View\View;
 use App\Models\Category_product;
-use App\Models\Supplier;
+use App\Models\Promo;
 
 //import return type redirectResponse
 use Illuminate\Http\RedirectResponse;
@@ -44,6 +44,7 @@ class ProductController extends Controller
         return $product;
     }
 
+    
     // ------------------------------------------------------------------
     // CRUD
     // ------------------------------------------------------------------
@@ -59,9 +60,9 @@ class ProductController extends Controller
         $categoryModel = new Category_product;
         $data['categories'] = $categoryModel->get_category_product()->get(); 
 
-        // Mengambil semua supplier
-        $supplierModel = new Supplier;
-        $data['suppliers'] = $supplierModel->get_supplier()->get();
+        // Mengambil semua promo
+        $promoModel = new Promo;
+        $data['promos'] = $promoModel->get_promo()->get();
 
         return view('products.create', compact('data')); 
     }
@@ -76,12 +77,14 @@ class ProductController extends Controller
     */
     public function store(Request $request): RedirectResponse
     {
+        $data = $request->json()->all();
+
         // 1. Validasi data input dari form
         $validatedData = $request->validate([
             'image'               => 'required|image|mimes:jpeg,png,jpg,webp|max:2048',
             'title'               => 'required|min:5',
             'product_category_id' => 'required|integer', 
-            'supplier_id'         => 'required|integer',
+            'promo_id'            => 'required|integer',
             'description'         => 'required|min:10', 
             'price'               => 'required|numeric', 
             'stock'               => 'required|numeric', 
@@ -142,8 +145,8 @@ class ProductController extends Controller
         $categoryModel = new Category_product;
         $product['categories'] = $categoryModel->get_category_product()->get();
 
-        $supplierModel = new Supplier; 
-        $product['suppliers_'] = $supplierModel->get_supplier()->get();
+        $promoModel = new Promo; 
+        $product['promos'] = $promoModel->get_promo()->get();
 
         return view('products.edit', compact('data', 'product'));
     }
@@ -191,7 +194,7 @@ class ProductController extends Controller
             $request_data = [
                 'title'                 => $request->title,
                 'product_category_id'   => $request->product_category_id,
-                'supplier_id'           => $request->supplier_id,
+                'promo_id'              => $request->promo_id,
                 'description'           => $request->description,
                 'price'                 => $request->price,
                 'stock'                 => $request->stock
@@ -225,5 +228,30 @@ class ProductController extends Controller
         //redirect to index
         return redirect()->route('products.index')->with(['success' => 'Data Berhasil Dihapus!']);
     }
+
+
+    /**
+     * updateStock
+     * 
+     * @param Request $request
+     * @return RedirectResponse
+     */
+public function updateStock(Request $request)
+{
+    // Validasi data yang masuk
+    $request->validate([
+        'product_id' => 'required|exists:products,id',
+        'stock' => 'required|integer|min:0'
+    ]);
+
+    // Cari produk berdasarkan ID dan update stoknya
+    $product = \App\Models\Product::findOrFail($request->product_id);
+    $product->update([
+        'stock' => $request->stock
+    ]);
+
+    // Kembali ke halaman sebelumnya dengan pesan sukses
+    return redirect()->back()->with('success', 'Stok berhasil diperbarui!');
+}
 
 }

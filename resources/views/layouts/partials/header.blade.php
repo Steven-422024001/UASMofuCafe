@@ -9,8 +9,8 @@
         <a href="{{ route('products.index') }}" class="{{ request()->routeIs('products.*') ? 'active' : '' }}">
             <i class="fa-solid fa-mug-hot"></i> Products
         </a>
-        <a href="{{ route('suppliers.index') }}" class="{{ request()->routeIs('suppliers.*') ? 'active' : '' }}">
-            <i class="fa-solid fa-truck-fast"></i> Supplier
+        <a href="{{ route('promos.index') }}" class="{{ request()->routeIs('promos.*') ? 'active' : '' }}">
+            <i class="fa-solid fa-truck-fast"></i> Promo
         </a>
         <a href="{{ route('category.index') }}" class="{{ request()->routeIs('category.*') ? 'active' : '' }}">
             <i class="fa-solid fa-tags"></i> Category

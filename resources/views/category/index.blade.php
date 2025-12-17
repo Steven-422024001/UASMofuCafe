@@ -1,152 +1,182 @@
 @extends('layouts.app')
 
-@section('title', 'Daftar Kategori - Mofu Cafe')
-@section('page-title', 'Category Management')
-
-@push('styles')
-<style>
-    /* ==============================================
-       STYLING KHUSUS HALAMAN INDEKS KATEGORI
-    ============================================== */
-    .category-card {
-        background-color: #fff;
-        border: 2px solid var(--mofu-light-border);
-        border-radius: 40px;
-        padding: 1.25rem;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-    }
-
-    .category-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.1);
-    }
-
-    .category-card__body {
-        padding: 1.5rem;
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    }
-
-    .category-card__icon {
-        width: 40px;
-        height: 40px;
-        background-color: var(--mofu-blue-text);
-        color: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 1.2rem;
-        margin-right: 1rem;
-        flex-shrink: 0;
-    }
-
-    .category-card__title {
-        font-weight: 700;
-        margin-bottom: 0.1rem;
-        color: var(--mofu-dark-text);
-    }
-
-    .category-card__subtitle {
-        color: var(--mofu-text-muted);
-        font-size: 0.9rem;
-    }
-
-    .category-card__description {
-        color: var(--mofu-text-muted);
-        font-size: 0.875rem;
-        margin-top: 0.75rem;
-        flex-grow: 1;
-    }
-
-    .category-card__actions {
-        margin-top: auto;
-        display: flex;
-        gap: 0.5rem;
-        justify-content: flex-end;
-    }
-
-    /* Tombol aksi */
-    .action-buttons a, .action-buttons button {
-        width: 32px;
-        height: 32px;
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 0.375rem;
-    }
-    .action-buttons .btn-dark { background-color: #e2e8f0; color: #4a5568; border: none; }
-    .action-buttons .btn-dark:hover { background-color: #cbd5e1; }
-    .action-buttons .btn-primary { background-color: #e0e7ff; color: #4338ca; border: none; }
-    .action-buttons .btn-primary:hover { background-color: #c7d2fe; }
-    .action-buttons .btn-danger { background-color: #fee2e2; color: #b91c1c; border: none; }
-    .action-buttons .btn-danger:hover { background-color: #fecaca; }
-</style>
-@endpush
+@section('title', 'Category Management - Mofu Cafe')
 
 @section('content')
-<div class="content-card">
-    {{-- Header Halaman --}}
-    <div class="d-flex justify-content-between align-items-center mb-4">
+<style>
+    /* Container Utama */
+    .content-card-custom {
+        background: #F9F9F9;
+        padding: 30px;
+        border-radius: 30px;
+    }
+
+    /* Header Styling */
+    .header-title {
+        font-weight: 800;
+        color: #333;
+        font-size: 24px;
+    }
+
+    /* Tombol Add New dengan Gradasi Mofu */
+    .btn-add-mofu {
+        background: linear-gradient(135deg, #A3765D 0%, #634237 100%);
+        color: white;
+        border: none;
+        padding: 10px 25px;
+        border-radius: 15px;
+        font-weight: 600;
+        transition: 0.3s;
+        box-shadow: 0 4px 15px rgba(99, 66, 55, 0.2);
+    }
+    .btn-add-mofu:hover {
+        transform: translateY(-2px);
+        color: white;
+        opacity: 0.9;
+    }
+
+    /* Category Card Styling (Figma Style) */
+    .category-card-figma {
+        background: #FFFFFF;
+        border: none;
+        border-radius: 25px; /* Sudut melengkung khas Figma */
+        padding: 25px;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        border: 1px solid #f0f0f0;
+    }
+
+    .category-card-figma:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+        border-color: #A3765D;
+    }
+
+    .icon-box {
+        width: 50px;
+        height: 50px;
+        background: #FFF5F0;
+        color: #A3765D;
+        border-radius: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        margin-bottom: 20px;
+    }
+
+    .category-name {
+        font-weight: 700;
+        font-size: 18px;
+        color: #333;
+        margin-bottom: 5px;
+    }
+
+    .item-count {
+        font-size: 13px;
+        color: #A0A0A0;
+        font-weight: 500;
+        background: #F5F5F5;
+        padding: 4px 12px;
+        border-radius: 20px;
+        display: inline-block;
+        margin-bottom: 15px;
+    }
+
+    .category-desc {
+        font-size: 14px;
+        color: #777;
+        line-height: 1.6;
+        margin-bottom: 20px;
+        height: 45px;
+        overflow: hidden;
+    }
+
+    /* Action Buttons in Card */
+    .card-actions {
+        display: flex;
+        gap: 10px;
+        border-top: 1px solid #F0F0F0;
+        padding-top: 20px;
+    }
+
+    .btn-action-light {
+        flex: 1;
+        padding: 8px;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s;
+    }
+
+    .btn-show { background: #F0F4FF; color: #5C7CFA; }
+    .btn-edit { background: #F0FFF4; color: #38A169; }
+    .btn-delete-light { background: #FFF5F5; color: #E53E3E; border: none; width: 100%; }
+
+    .btn-action-light:hover { filter: brightness(0.95); }
+
+</style>
+
+<div class="content-card-custom">
+    {{-- Header Section --}}
+    <div class="d-flex justify-content-between align-items-center mb-5">
         <div>
-            <h5 class="fw-bold mb-1">Category Management</h5>
-            <p class="text-muted mb-0">Atur semua kategori produk Mofu Cafe di sini 🏷️</p>
+            <h2 class="header-title mb-1">Category Management</h2>
+            <p class="text-muted">Kelola kategori produk dengan gaya yang lebih rapi.</p>
         </div>
-        <a href="{{ route('category.create') }}" class="btn btn-add-new">
-            <i class="fas fa-plus"></i> Add Category
+        <a href="{{ route('category.create') }}" class="btn btn-add-mofu">
+            <i class="fas fa-plus me-2"></i> Add New Category
         </a>
     </div>
 
-    {{-- Grid Kartu Kategori --}}
-    <div class="row category-grid">
+    {{-- Grid Section --}}
+    <div class="row">
         @forelse ($categories as $category)
             <div class="col-md-6 col-lg-3 mb-4">
-                <div class="category-card h-100">
-                    <div class="category-card__body">
-                        <div class="d-flex align-items-start">
-                            <div class="category-card__icon">
-                                <i class="fas fa-tag"></i>
-                            </div>
-                            <div>
-                                <h5 class="category-card__title">{{ $category->name }}</h5>
-                                <h6 class="category-card__subtitle">
-                                    {{ $category->products_count }} {{ Str::plural('Item', $category->products_count) }}
-                                </h6>
-                            </div>
-                        </div>
-                        <p class="category-card__description">
-                            {!! Str::limit($category->description, 60, '...') !!}
-                        </p>
-                        <div class="category-card__actions action-buttons">
-                            <a href="{{ route('category.show', $category->id) }}" class="btn btn-sm btn-dark" title="Show">
-                                <i class="fas fa-eye"></i>
-                            </a>
-                            <a href="{{ route('category.edit', $category->id) }}" class="btn btn-sm btn-primary" title="Edit">
-                                <i class="fas fa-pencil-alt"></i>
-                            </a>
-                            <form action="{{ route('category.destroy', $category->id) }}" method="POST" class="form-delete">
-                                @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn btn-sm btn-danger btn-delete" title="Delete">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </form>
-                        </div>
+                <div class="category-card-figma">
+                    <div class="icon-box">
+                        <i class="fas fa-th-large"></i>
+                    </div>
+                    
+                    <h5 class="category-name">{{ $category->name }}</h5>
+                    <span class="item-count">
+                        <i class="fas fa-box-open me-1"></i> {{ $category->products_count ?? 0 }} Items
+                    </span>
+
+                    <p class="category-desc">
+                        {{ Str::limit($category->description, 55, '...') }}
+                    </p>
+
+                    <div class="card-actions">
+                        <a href="{{ route('category.show', $category->id) }}" class="btn-action-light btn-show" title="View">
+                            <i class="fas fa-eye"></i>
+                        </a>
+                        <a href="{{ route('category.edit', $category->id) }}" class="btn-action-light btn-edit" title="Edit">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+                        <form action="{{ route('category.destroy', $category->id) }}" method="POST" class="form-delete flex-fill">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn-action-light btn-delete-light" title="Delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
                     </div>
                 </div>
             </div>
         @empty
-            <div class="col-12">
-                <div class="alert alert-secondary text-center">
-                    Data Kategori belum tersedia.
-                </div>
+            <div class="col-12 text-center py-5">
+                <img src="https://illustrations.popsy.co/gray/box.svg" alt="empty" style="width: 200px; margin-bottom: 20px;">
+                <p class="text-muted">Belum ada kategori yang ditambahkan.</p>
             </div>
         @endforelse
     </div>
 
-    {{-- Link Paginasi --}}
+    {{-- Pagination --}}
     <div class="d-flex justify-content-center mt-4">
         {!! $categories->links('pagination::bootstrap-5') !!}
     </div>
@@ -157,42 +187,27 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        // 🔔 Notifikasi dari session
+        // Notifikasi SweetAlert
         @if(session('success'))
-            Swal.fire({
-                icon: "success",
-                title: "BERHASIL",
-                text: "{{ session('success') }}",
-                showConfirmButton: false,
-                timer: 2000
-            });
-        @elseif(session('error'))
-            Swal.fire({
-                icon: "error",
-                title: "GAGAL",
-                text: "{{ session('error') }}",
-                showConfirmButton: false,
-                timer: 2000
-            });
+            Swal.fire({ icon: "success", title: "Berhasil!", text: "{{ session('success') }}", timer: 2000, showConfirmButton: false });
         @endif
 
-        // 🗑️ Konfirmasi hapus
+        // Konfirmasi Hapus
         document.querySelectorAll('.form-delete').forEach(form => {
             form.addEventListener('submit', function (e) {
                 e.preventDefault();
                 Swal.fire({
-                    title: 'Yakin hapus data ini?',
-                    text: "Data yang dihapus tidak bisa dikembalikan!",
+                    title: 'Hapus Kategori?',
+                    text: "Produk di kategori ini mungkin akan terpengaruh.",
                     icon: 'warning',
                     showCancelButton: true,
-                    confirmButtonColor: '#d33',
-                    cancelButtonColor: '#6c757d',
-                    confirmButtonText: 'Ya, hapus!',
-                    cancelButtonText: 'Batal'
+                    confirmButtonColor: '#E53E3E',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal',
+                    border: 'none',
+                    borderRadius: '20px'
                 }).then((result) => {
-                    if (result.isConfirmed) {
-                        this.submit();
-                    }
+                    if (result.isConfirmed) { this.submit(); }
                 });
             });
         });

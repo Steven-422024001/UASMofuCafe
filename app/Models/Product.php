@@ -17,7 +17,7 @@ class Product extends Model
         'image',
         'title',
         'product_category_id',
-        'supplier_id',
+        'promo_id',
         'description',
         'price',
         'stock',
@@ -27,10 +27,10 @@ class Product extends Model
         $sql = $this->select(
                     "products.*",
                     "category_product.name as product_category_name",
-                    "supplier.supplier_name as supplier_name"
+                    "promo.promo_name as promo_name"
                 )
                 ->leftjoin('category_product', 'category_product.id', '=', 'products.product_category_id')
-                ->leftjoin('supplier', 'supplier.id', '=', 'products.supplier_id'); 
+                ->leftjoin('promo', 'promo.id', '=', 'products.promo_id'); 
         return $sql;            
     }
     
@@ -43,7 +43,7 @@ class Product extends Model
             'image'               => $image->hashName(),
             'title'               => $request->title,
             'product_category_id' => $request->product_category_id,
-            'supplier_id'         => $request->supplier_id,
+            'promo_id'            => $request->promo_id,
             'description'         => $request->description,
             'price'               => $request->price,
             'stock'               => $request->stock
@@ -59,7 +59,7 @@ class Product extends Model
             $data = [
                 'title'                 => $request['title'],
                 'product_category_id'   => $request['product_category_id'],
-                'supplier_id'           => $request['supplier_id'],
+                'promo_id'              => $request['promo_id'],
                 'description'           => $request['description'],
                 'price'                 => $request['price'],
                 'stock'                 => $request['stock']

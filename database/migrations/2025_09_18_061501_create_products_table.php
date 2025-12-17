@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->id();
             $table->foreignId('product_category_id')->nullable()->index();
-            $table->foreignId('supplier_id')->nullable()->index();
+            $table->foreignId('promo_id')->nullable()->index();
             $table->string('image');
             $table->string('title');
             $table->text('description');
@@ -29,10 +29,10 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('supplier', function (Blueprint $table) {
+        Schema::create('promo', function (Blueprint $table) {
             $table->id();
-            $table->string('supplier_name');
-            $table->string('pic_supplier');
+            $table->string('promo_name');
+            $table->string('pic_promo');
             $table->timestamps();
         });
     }
